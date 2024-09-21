@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "target": "es2017",
+    "sourceMap": true,
+    "outDir": "./dist"
+  },
+  "allowJs": true,
+  "noImplicitAny": false,
+  "lib": [
+    "es2015"
+  ],
+  "include": [
+    "src",
+  ],
+  // "files": [
+  // ],
+  "strict": false,
+  "alwaysStrict": false
+}
