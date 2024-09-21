@@ -39,12 +39,15 @@ const journeyDataSchema = new Schema(
         type: Date,
         required: true
     },
+    deleted_on: {
+        type: Date,
+    },
     journey_ends_on: {
         type: Date,
         required: true
     },
     stops:{
-            type: [String],
+        type: [String],
     },
     max_weight: {
         type: Number,

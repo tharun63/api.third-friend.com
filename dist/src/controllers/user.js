@@ -37,6 +37,7 @@ class UserController {
     async signUp(req, res, next) {
         try {
             const userData = req.body;
+            console.log({ userData });
             await userDataServiceProvider.saveUser(userData);
             return res.status(201).json({
                 success: true,
@@ -162,18 +163,18 @@ class UserController {
     }
     async AddUser(req, res, next) {
         try {
-            const advertiserData = req.body;
+            const userData = req.body;
             const requestedUser = req.user;
-            advertiserData.username = advertiserData.username.toLowerCase();
-            const exists = await userDataServiceProvider.userNameExists(advertiserData.username);
+            userData.username = userData.username.toLowerCase();
+            const exists = await userDataServiceProvider.userNameExists(userData.username);
             if (exists) {
                 const err = new customError_1.CustomError();
                 err.status = 409;
                 err.message = "Account with this username is already taken";
                 throw err;
             }
-            advertiserData.password = "123456";
-            let savedUser = await userDataServiceProvider.saveUser(advertiserData);
+            userData.password = "123456";
+            let savedUser = await userDataServiceProvider.saveUser(userData);
             const addedUserName = savedUser.first_name + " " + savedUser.last_name;
             const role = savedUser.user_type
                 .split('_')

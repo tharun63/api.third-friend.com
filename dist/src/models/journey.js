@@ -39,6 +39,9 @@ const journeyDataSchema = new mongoose_1.Schema({
         type: Date,
         required: true
     },
+    deleted_on: {
+        type: Date,
+    },
     journey_ends_on: {
         type: Date,
         required: true

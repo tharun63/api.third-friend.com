@@ -4,9 +4,16 @@ const saltRounds = 12;
 
 export class UserDataServiceProvider {
   public async saveUser(userData) {
-    // Hash Password
-    userData.password = await bcrypt.hash(userData.password, saltRounds);
-    return await UserModel.create(userData);
+    try{
+      userData.password = await bcrypt.hash(userData.password, saltRounds);
+      return await UserModel.create(userData);
+
+    }
+    catch(err){
+      console.log({err})
+
+    }
+   
   }
 
   public async saveUserFromGoogle(userData) {

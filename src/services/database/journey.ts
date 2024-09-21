@@ -1,5 +1,4 @@
 import { JourneyModel } from "../../models/journey";
-const saltRounds = 12;
 
 export class JourneyDataServiceProvider {
 
@@ -12,8 +11,18 @@ export class JourneyDataServiceProvider {
   async updateJourneyById(journeyId, data) {
     return JourneyModel.updateOne({ _id: journeyId }, { $set: data });
   }
+
+  async getJourneyById(journeyId) {
+    return JourneyModel.findOne({ _id: journeyId });
+  }
+
   async updateJourneyByQuery(query, data) {
     return JourneyModel.updateOne(query, { $set: data });
+  }
+
+  async journeyExists(query) {
+    const journeysCount = await JourneyModel.countDocuments(query);
+    return journeysCount ? true : false;
   }
 
   async getAllJourneys({

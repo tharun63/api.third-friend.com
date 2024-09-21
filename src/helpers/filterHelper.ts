@@ -1,3 +1,4 @@
+import moment from "moment";
 
 class FiltersHelper {
   
@@ -40,6 +41,40 @@ class FiltersHelper {
       query.status = filters.status;
     } else {
       query.status = { $ne: "ARCHIVED" };
+    }
+    
+    return query;
+  }
+
+  public journeys(query, filters) {
+  
+    if (filters.mode_of_transport) {
+      query.mode_of_transport = filters.mode_of_transport;
+    }
+
+    if (filters.search_string && filters.search_string.trim()) {
+      const searchPattern = new RegExp(
+        filters.search_string.trim().replace(/\s/, "|"),
+        "ig"
+      );
+
+      query.$or = [
+        { origin: searchPattern },
+        { destination: searchPattern }
+      ];
+    }
+
+    if (filters.from_date && filters.to_date) {
+      query.journey_begins_on = {
+        $gte: moment.utc(filters.from_date).format(),
+        $lte: moment.utc(filters.to_date).format(),
+      };
+    }
+
+    if (filters.journey_status) {
+      query.status = filters.journey_status;
+    } else {
+      query.status = { $nin: ["ENDED", "CANCELLED", "ARCHIVED"] };
     }
     
     return query;

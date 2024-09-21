@@ -9,9 +9,13 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const saltRounds = 12;
 class UserDataServiceProvider {
     async saveUser(userData) {
-        // Hash Password
-        userData.password = await bcrypt_1.default.hash(userData.password, saltRounds);
-        return await user_1.UserModel.create(userData);
+        try {
+            userData.password = await bcrypt_1.default.hash(userData.password, saltRounds);
+            return await user_1.UserModel.create(userData);
+        }
+        catch (err) {
+            console.log({ err });
+        }
     }
     async saveUserFromGoogle(userData) {
         return await user_1.UserModel.create(userData);

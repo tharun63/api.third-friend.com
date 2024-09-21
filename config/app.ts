@@ -46,9 +46,9 @@ switch (env) {
   case "dev":
     JWTData = {
       token_secret: process.env.DEV_TOKEN_SECRET,
-      token_life: process.env.DEV_TOKEN_LIFE, 
+      token_life: parseInt(process.env.DEV_TOKEN_LIFE), 
       refresh_token_secret: process.env.DEV_REFRESH_TOKEN_SECRET,
-      refresh_token_life: process.env.DEV_REFRESH_TOKEN_LIFE, 
+      refresh_token_life: parseInt(process.env.DEV_REFRESH_TOKEN_LIFE), 
     };
 
     break;
@@ -56,9 +56,9 @@ switch (env) {
   case "prod":
     JWTData = {
       token_secret: process.env.TOKEN_SECRET,
-      token_life: process.env.TOKEN_LIFE, 
+      token_life: parseInt(process.env.TOKEN_LIFE), 
       refresh_token_secret: process.env.REFRESH_TOKEN_SECRET,
-      refresh_token_life: process.env.REFRESH_TOKEN_LIFE,
+      refresh_token_life: parseInt(process.env.REFRESH_TOKEN_LIFE),
     };
 
  

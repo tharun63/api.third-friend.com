@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.JourneyDataServiceProvider = void 0;
 const journey_1 = require("../../models/journey");
-const saltRounds = 12;
 class JourneyDataServiceProvider {
     async saveJourney(journeyData) {
         return await journey_1.JourneyModel.create(journeyData);
@@ -10,8 +9,15 @@ class JourneyDataServiceProvider {
     async updateJourneyById(journeyId, data) {
         return journey_1.JourneyModel.updateOne({ _id: journeyId }, { $set: data });
     }
+    async getJourneyById(journeyId) {
+        return journey_1.JourneyModel.findOne({ _id: journeyId });
+    }
     async updateJourneyByQuery(query, data) {
         return journey_1.JourneyModel.updateOne(query, { $set: data });
+    }
+    async journeyExists(query) {
+        const journeysCount = await journey_1.JourneyModel.countDocuments(query);
+        return journeysCount ? true : false;
     }
     async getAllJourneys({ query = {}, skip = null, limit = null, sort = {}, projection = {}, lean = false, }) {
         if (lean) {

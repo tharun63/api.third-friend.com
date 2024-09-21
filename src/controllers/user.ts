@@ -41,6 +41,7 @@ export class UserController {
   public async signUp(req: Request, res: Response, next: NextFunction) {
     try {
       const userData = req.body;
+      console.log({userData})
       
       await userDataServiceProvider.saveUser(userData);
       return res.status(201).json({
@@ -212,12 +213,12 @@ export class UserController {
   public async AddUser(req: Request, res: Response, next: NextFunction) {
     try {
 
-      const advertiserData = req.body;
+      const userData = req.body;
       const requestedUser: any = req.user;
 
-      advertiserData.username = advertiserData.username.toLowerCase();
+      userData.username = userData.username.toLowerCase();
       const exists = await userDataServiceProvider.userNameExists(
-        advertiserData.username
+        userData.username
       );
 
       if (exists) {
@@ -227,11 +228,11 @@ export class UserController {
         throw err;
       }
      
-      advertiserData.password = "123456";
+      userData.password = "123456";
      
      
 
-      let savedUser: any = await userDataServiceProvider.saveUser(advertiserData);
+      let savedUser: any = await userDataServiceProvider.saveUser(userData);
 
     
       const addedUserName = savedUser.first_name + " " + savedUser.last_name;

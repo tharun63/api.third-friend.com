@@ -44,7 +44,15 @@ class AuthMiddleware {
                 // Verify JWT
                 jsonwebtoken_1.default.verify(accessToken, tokenSecret);
                 // Add User to the Request Payload
-                req.user = user;
+                req.user = {
+                    user_type: user.user_type,
+                    google_id: user.google_id,
+                    _id: user._id,
+                    email: user.name,
+                    user_status: user.user_status,
+                    first_name: user.first_name,
+                    last_name: user.last_name
+                };
                 next();
             }
             catch (error) {

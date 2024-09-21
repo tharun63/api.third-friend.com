@@ -5,7 +5,7 @@ import ejs from "ejs";
 import { index } from "./../views/index";
 import user from './user'
 import AppConfig from "../../config/app";
-
+import journey from "./journey"
 
 const router: Router = Router();
 router.get("/", (req: Request, res: Response, next: NextFunction) => {
@@ -20,6 +20,7 @@ router.get("/", (req: Request, res: Response, next: NextFunction) => {
 
 
 router.use(user);
+router.use(journey);
 
 
 
