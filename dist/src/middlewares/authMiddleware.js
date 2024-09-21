@@ -128,7 +128,7 @@ class AuthMiddleware {
     // }
     async verifyUser(req, res, next) {
         try {
-            const token = req.query.authorization;
+            const token = req.headers.authorization;
             if (!token) {
                 throw new customError_1.CustomError(401, "Token missing");
             }

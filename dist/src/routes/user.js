@@ -39,7 +39,7 @@ router.post('/forgot-password/verify', [
     validateRequest,
     authMiddleware_1.default.verifyUser,
 ], userController.verifyForgotPassword);
-router.post('/users/reset-password', [
+router.post('/reset-password', [
     validateRequest,
     authMiddleware_1.default.verifyUser,
 ], userController.resetPassword);

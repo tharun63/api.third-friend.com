@@ -161,7 +161,7 @@ export class AuthMiddleware {
     next: NextFunction
   ) {
     try {
-      const token = req.query.authorization;
+      const token = req.headers.authorization;
 
       if (!token) {
         throw new CustomError(401, "Token missing");

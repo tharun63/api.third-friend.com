@@ -66,7 +66,7 @@ router.post(
 );
 
 router.post(
-  '/users/reset-password',
+  '/reset-password',
   [
     validateRequest,
     authMiddleware.verifyUser,

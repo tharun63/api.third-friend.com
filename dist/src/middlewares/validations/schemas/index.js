@@ -6,6 +6,7 @@ const forgotPassword_1 = require("./users/forgotPassword");
 const forgotPasswordVerify_1 = require("./users/forgotPasswordVerify");
 const updateProfile_1 = require("./users/updateProfile");
 const addJourney_1 = require("./journeys/addJourney");
+const resetPassword_1 = require("./users/resetPassword");
 // import { updatePasswordDataSchema } from "./users/updatePassword";
 exports.default = {
     "/signup": signup_1.signUpDataSchema,
@@ -16,6 +17,7 @@ exports.default = {
     "/forgot-password": forgotPassword_1.forgotPasswordDataSchema,
     "/forgot-passowrd/verify": forgotPasswordVerify_1.forgotPasswordVerifyHeadersSchema,
     /* reset password */
+    "/reset-password": resetPassword_1.resetPasswordSchema,
     "/journey": {
         multi: true,
         post: addJourney_1.addJourneyDataSchema,
