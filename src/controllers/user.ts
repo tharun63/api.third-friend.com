@@ -40,9 +40,7 @@ export class UserController {
 
   public async signUp(req: Request, res: Response, next: NextFunction) {
     try {
-      const userData = req.body;
-      console.log({userData})
-      
+      const userData = req.body;      
       await userDataServiceProvider.saveUser(userData);
       return res.status(201).json({
         success: true,

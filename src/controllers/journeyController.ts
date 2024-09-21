@@ -17,8 +17,8 @@ export class JourneyController {
     public async AddJourney(req: Request, res: Response, next: NextFunction) {
         try {
     
-          let journeyData = req.body;
-        //   journeyData.user = req.user._id;
+          let journeyData:any = req.body;
+          journeyData.user = (req.user as { _id: string })._id;
     
           const exists = await journeyDataServiceProvider.journeyExists({
             user:journeyData.user,

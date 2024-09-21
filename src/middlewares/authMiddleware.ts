@@ -92,6 +92,7 @@ export class AuthMiddleware {
     next: NextFunction
   ): Promise<any> {
     try {
+      console.log("hi")
       const user: UserInterface = req.user;
       if (user.user_status === "ACTIVE") {
         return next();

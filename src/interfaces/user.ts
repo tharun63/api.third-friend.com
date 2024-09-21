@@ -14,7 +14,7 @@ export interface UserInterface {
     first_name: string
     last_name: string
     email?: string
-    phone?: string
+    mobile?: string
     address: AddressInterface
     user_type: string
     user_status?: string

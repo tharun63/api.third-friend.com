@@ -74,6 +74,7 @@ class AuthMiddleware {
     }
     async checkUserStatus(req, res, next) {
         try {
+            console.log("hi");
             const user = req.user;
             if (user.user_status === "ACTIVE") {
                 return next();

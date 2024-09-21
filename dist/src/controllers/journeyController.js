@@ -13,7 +13,7 @@ class JourneyController {
     async AddJourney(req, res, next) {
         try {
             let journeyData = req.body;
-            //   journeyData.user = req.user._id;
+            journeyData.user = req.user._id;
             const exists = await journeyDataServiceProvider.journeyExists({
                 user: journeyData.user,
                 journey_begins_on: journeyData.journey_begins_on

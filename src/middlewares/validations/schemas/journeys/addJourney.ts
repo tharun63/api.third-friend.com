@@ -3,7 +3,7 @@ import { stringErrorHandler, objectId, arrayErrorHandler, numberErrorHandler, da
 import dataFormatConstants from '../../../../constants/dataFormatConstants'
 import { JOURNEY_STATUS,MODE_OF_TRANSPORT } from '../../../../constants/journey'
 
-const JoiObjectId = objectId(Joi)
+Joi.objectId = objectId(Joi)
 
 const currentYear = new Date().getFullYear();
 
@@ -19,6 +19,9 @@ const journeyDataSchema = {
     journey_status: Joi.string()
     .valid(JOURNEY_STATUS)
     .error((errors) => stringErrorHandler(errors, "Journey Status")),
+    user: Joi.objectId()
+    .disallow("")
+    .error((errors) => stringErrorHandler(errors, "User")),
     pick_up_point: Joi.string().required().error(errors => stringErrorHandler(errors, 'Pick Up Point')),
     remarks: Joi.string().error(errors => stringErrorHandler(errors, 'Remarks')),
     journey_begins_on: Joi.date()
@@ -51,6 +54,6 @@ const journeyDataSchema = {
 export const addJourneyDataSchema = Joi.object().keys(journeyDataSchema)
 export const updateJourneyDataSchema = Joi.object().keys({
     ...journeyDataSchema,
-    journey_id: JoiObjectId().required()
+    // journey_id: JoiObjectId().required()
 })
 

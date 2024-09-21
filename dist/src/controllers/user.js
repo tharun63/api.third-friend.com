@@ -37,7 +37,6 @@ class UserController {
     async signUp(req, res, next) {
         try {
             const userData = req.body;
-            console.log({ userData });
             await userDataServiceProvider.saveUser(userData);
             return res.status(201).json({
                 success: true,

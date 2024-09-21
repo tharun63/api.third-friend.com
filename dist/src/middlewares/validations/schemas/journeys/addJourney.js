@@ -8,7 +8,7 @@ const joi_1 = __importDefault(require("joi"));
 const joiHelpers_1 = require("../../../../helpers/joiHelpers");
 const dataFormatConstants_1 = __importDefault(require("../../../../constants/dataFormatConstants"));
 const journey_1 = require("../../../../constants/journey");
-const JoiObjectId = (0, joiHelpers_1.objectId)(joi_1.default);
+joi_1.default.objectId = (0, joiHelpers_1.objectId)(joi_1.default);
 const currentYear = new Date().getFullYear();
 const journeyDataSchema = {
     origin: joi_1.default.string().max(40).regex(dataFormatConstants_1.default.CITY_REGEX).required().error(errors => (0, joiHelpers_1.stringErrorHandler)(errors, 'Origin')),
@@ -20,6 +20,9 @@ const journeyDataSchema = {
     journey_status: joi_1.default.string()
         .valid(journey_1.JOURNEY_STATUS)
         .error((errors) => (0, joiHelpers_1.stringErrorHandler)(errors, "Journey Status")),
+    user: joi_1.default.objectId()
+        .disallow("")
+        .error((errors) => (0, joiHelpers_1.stringErrorHandler)(errors, "User")),
     pick_up_point: joi_1.default.string().required().error(errors => (0, joiHelpers_1.stringErrorHandler)(errors, 'Pick Up Point')),
     remarks: joi_1.default.string().error(errors => (0, joiHelpers_1.stringErrorHandler)(errors, 'Remarks')),
     journey_begins_on: joi_1.default.date()
@@ -41,5 +44,5 @@ const journeyDataSchema = {
     charge_per_kg: joi_1.default.number().required().error((errors) => (0, joiHelpers_1.numberErrorHandler)(errors, "Charge Per Kg")),
 };
 exports.addJourneyDataSchema = joi_1.default.object().keys(journeyDataSchema);
-exports.updateJourneyDataSchema = joi_1.default.object().keys(Object.assign(Object.assign({}, journeyDataSchema), { journey_id: JoiObjectId().required() }));
+exports.updateJourneyDataSchema = joi_1.default.object().keys(Object.assign({}, journeyDataSchema));
 //# sourceMappingURL=addJourney.js.map
