@@ -1,10 +1,12 @@
 import nodemailer, { Transporter } from 'nodemailer';
-import ejs from 'ejs';
+import PDFDocument from 'pdfkit';
+import config from "../../../config/app";
 
 interface EmailData {
   email: string;
   subject: string;
-  resetURL: string;
+  body?: string;       // Dynamic email content
+  resetURL?: string;    // Used for password reset emails
 }
 
 class EmailServiceProvider {
@@ -12,46 +14,81 @@ class EmailServiceProvider {
 
   constructor() {
     this.transporter = nodemailer.createTransport({
-      service: 'Gmail', // Replace with your email provider
+      service: config.email.email_service, 
       auth: {
-        user: 'Tharunrao063@gmail.com',
-        pass: 'nilw bhtw dmdi amxv',
+        user: config.email.user, // Environment variables for credentials
+        pass: config.email.pass,
       },
       tls: {
-        rejectUnauthorized: false, // This allows self-signed certificates
+        rejectUnauthorized: false,
       },
     });
-    this.sendEmail = this.sendEmail.bind(this);
   }
 
-  public async sendEmail(
+  // General method to send emails with optional attachments
+  private async sendEmail(
     emailData: EmailData,
-    ccList: string[] = []
+    ccList: string[] = [],
+    attachments?: { filename: string; content: Buffer; contentType: string }[]
   ): Promise<void> {
     try {
-      const emailRecepient = emailData.email;
-      const emailSubject = emailData.subject;
-
-      const toEmails = [emailRecepient];
-      const ccEmails = ccList;
-
       const mailOptions: nodemailer.SendMailOptions = {
-        from: 'noreply@labsquire.com',
-        to: toEmails,
-        cc: ccEmails,
-        subject: emailSubject,
-        text: `You are receiving this email because you (or someone else) have requested a password reset.\n\nPlease click on the following link, or paste it into your browser to complete the process:\n\n${emailData.resetURL}\n\nIf you did not request this, please ignore this email and your password will remain unchanged.\n`,
+        to: emailData.email,
+        cc: ccList,
+        subject: emailData.subject,
+        text: emailData.body, // Using dynamic email body
+        attachments, // Attachments if provided
       };
 
       await this.transporter.sendMail(mailOptions);
     } catch (error) {
-      // TODO:: Error Log
       console.error(error);
     }
   }
 
-  sendForgotPasswordDetailsEmail(emailData) {
-    this.sendEmail(emailData);
+  // Method to send password reset email
+  public async sendForgotPasswordEmail(emailData: EmailData): Promise<void> {
+    const body = `You are receiving this email because you (or someone else) requested a password reset.
+      Please click on the following link, or paste it into your browser to complete the process:
+      ${emailData.resetURL}
+      If you did not request this, please ignore this email.`;
+
+    await this.sendEmail({ ...emailData, body });
+  }
+
+  // Method to send invoice email
+  public async sendInvoiceEmail(email: string, session: any): Promise<void> {
+    const pdfBuffer = await this.generateInvoice(session);
+    const body = `Dear Customer, please find your invoice attached.
+      Invoice ID: ${session.id}
+      Amount Paid: ${(session.amount_total / 100).toFixed(2)} ${session.currency.toUpperCase()}`;
+
+    const attachments = [
+      {
+        filename: 'invoice.pdf',
+        content: pdfBuffer,
+        contentType: 'application/pdf',
+      },
+    ];
+
+    await this.sendEmail({ email, subject: 'Your Invoice', body }, [], attachments);
+  }
+
+  // Helper function to generate invoice PDF
+  private async generateInvoice(session: any): Promise<Buffer> {
+    return new Promise((resolve, reject) => {
+      const doc = new PDFDocument();
+      const buffers: Buffer[] = [];
+
+      doc.on('data', buffers.push.bind(buffers));
+      doc.on('end', () => resolve(Buffer.concat(buffers)));
+
+      doc.fontSize(25).text('Invoice', { align: 'center' });
+      doc.text(`Session ID: ${session.id}`);
+      doc.text(`Amount Paid: ${(session.amount_total / 100).toFixed(2)} ${session.currency.toUpperCase()}`);
+      
+      doc.end();
+    });
   }
 }
 

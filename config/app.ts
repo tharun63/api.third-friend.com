@@ -25,6 +25,17 @@ const GOOGLE_API = {
   google_redirect_uri: process.env.REDIRECT_URI
 };
 
+const EMAIL_SERVICE = {
+  email_service: process.env.EMAIL_SERVICE,
+  user: process.env.GMAIL_USER,
+  pass: process.env.GMAIL_PASSKEY
+}
+
+const STRIPE = {
+  secret_key: process.env.STRIPE_SECRET_KEY,
+  web_hook_key: process.env.STRIPE_WEB_HOOK_KEY,
+};
+
 
 // load different jwt secrets based on the NODE_ENV value passed during the npm command
 const env = process.env.NODE_ENV;
@@ -34,20 +45,20 @@ var JWTData = null;
 switch (env) {
   case "dev":
     JWTData = {
-      token_secret: "54a6dd58870e4d81b2ec7fd91fb30db8",
-      token_life: 604800, // in seconds - 1 Hr
-      refresh_token_secret: "7208d26ac5a64c108d67878f5eda3255",
-      refresh_token_life: 604800, // in seconds - 7 Days,
-      patient_portal_token_refresh_life: 60000,
+      token_secret: process.env.DEV_TOKEN_SECRET,
+      token_life: process.env.DEV_TOKEN_LIFE, 
+      refresh_token_secret: process.env.DEV_REFRESH_TOKEN_SECRET,
+      refresh_token_life: process.env.DEV_REFRESH_TOKEN_LIFE, 
     };
+
     break;
+
   case "prod":
     JWTData = {
-      token_secret: "0da53d14b60c410fb778b7a10603ee61",
-      token_life: 604800, // in seconds - 1 Hr
-      refresh_token_secret: "f64f4684dbb94d6197414369de20cf09",
-      refresh_token_life: 604800, // in seconds - 7 Days
-      patient_portal_token_refresh_life: 60000,
+      token_secret: process.env.TOKEN_SECRET,
+      token_life: process.env.TOKEN_LIFE, 
+      refresh_token_secret: process.env.REFRESH_TOKEN_SECRET,
+      refresh_token_life: process.env.REFRESH_TOKEN_LIFE,
     };
 
  
@@ -58,7 +69,11 @@ const configData = {
   app: appData,
   db: DB,
   jwt: JWTData,
-  google: GOOGLE_API
+  google: GOOGLE_API,
+  payments:{
+    stripe:STRIPE
+  },
+  email:EMAIL_SERVICE
 
 };
 export default configData;

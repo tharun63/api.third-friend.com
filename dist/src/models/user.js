@@ -53,13 +53,12 @@ const userDataSchema = new mongoose_1.Schema({
     },
     user_type: {
         type: String,
-        enum: ['ADMIN', 'USER'],
-        default: 'USER'
+        enum: user_1.ALL_USERS,
+        default: user_1.DEFAULT_USER_TYPE
     },
     address: addressSchema,
     password: {
         type: String,
-        // required: true
     },
     google_id: {
         type: String,
@@ -74,8 +73,8 @@ const userDataSchema = new mongoose_1.Schema({
     },
     auth_provider: {
         type: String,
-        enum: ['GOOGLE', 'NA'],
-        default: 'NA'
+        enum: user_1.AUTH_PROVIDERS,
+        default: user_1.DEFAULT_AUTH_PROVIDER
     }
 }, {
     timestamps: {

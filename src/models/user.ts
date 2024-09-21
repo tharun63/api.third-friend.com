@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { ACCOUNT_STATUS,DEFAULT_ACCOUNT_STATUS } from '../constants/user'
+import { ACCOUNT_STATUS,DEFAULT_ACCOUNT_STATUS,ALL_USERS,DEFAULT_USER_TYPE,AUTH_PROVIDERS, DEFAULT_AUTH_PROVIDER} from '../constants/user'
 
 const addressSchema = new Schema({
     line_one: {
@@ -53,13 +53,12 @@ const userDataSchema = new Schema(
     },
     user_type: {
         type: String,
-        enum: ['ADMIN', 'USER'],
-        default: 'USER'
+        enum: ALL_USERS,
+        default: DEFAULT_USER_TYPE
     },
     address: addressSchema,
     password: {
         type: String,
-        // required: true
     },
     google_id: {
         type: String,
@@ -74,8 +73,8 @@ const userDataSchema = new Schema(
     },
     auth_provider: {
         type:String,
-        enum: ['GOOGLE','NA'],
-        default: 'NA' 
+        enum: AUTH_PROVIDERS,
+        default: DEFAULT_AUTH_PROVIDER 
     }
    
   },

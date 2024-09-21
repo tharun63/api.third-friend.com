@@ -80,7 +80,7 @@ class UserController {
             let emailPreparationData = (0, messageHelper_1.prepareEmailData)(user, "FORGOT_PASSWORD");
             // sending mail to user
             const { emailData } = (0, messageHelper_1.prepareForgotPasswordEmailData)(emailPreparationData);
-            await emailServiceProvider_1.default.sendForgotPasswordDetailsEmail(emailData);
+            await emailServiceProvider_1.default.sendForgotPasswordEmail(emailData);
             return res.status(200).json({
                 success: true,
                 message: `Forgot Password Link sent to ${user.email} successfully. Please note that the Link will expire in 15 minutes`,
@@ -173,10 +173,6 @@ class UserController {
                 throw err;
             }
             advertiserData.password = "123456";
-            //   userData.password_expired_at = moment()
-            //     .add(appConfig.app.password_expire_in_days, "days")
-            //     .utc()
-            //     .format();
             let savedUser = await userDataServiceProvider.saveUser(advertiserData);
             const addedUserName = savedUser.first_name + " " + savedUser.last_name;
             const role = savedUser.user_type
@@ -193,47 +189,6 @@ class UserController {
             next(err);
         }
     }
-    //   public async UpdateUser(req: Request, res: Response, next: NextFunction) {
-    //     try {
-    //       const userData = req.body;
-    //       userData.hospital_marketing_manager = userData.reporting_to;
-    //       const userId = req.params.user_id;
-    //       const requestUser: any = req.user;
-    //       userData.username = userData.username.toLowerCase();
-    //       const exists = await userDataServiceProvider.userNameExistsForUpdateUser(
-    //         userData.username,
-    //         userId
-    //       );
-    //       if (exists) {
-    //         const err = new CustomError();
-    //         err.status = 409;
-    //         err.message = "Account with this username is already taken";
-    //         throw err;
-    //       }
-    //       userData.user_code = req.body.username;
-    //       userData.designation = userTypeDesignationMap[userData.user_type] || "User"
-    //       let emailEventData = userData.settings.email_events;
-    //       if (emailEventData.length) {
-    //         userData.settings.email_notifications = true;
-    //       } else {
-    //         userData.settings.email_notifications = false;
-    //       }
-    //       await userDataServiceProvider.updateUserById(userId, userData);
-    //       const auditSection = await logsHelper.auditTypeHelper(requestUser.user_type);
-    //       await logsDataServiceProvider.userDataUpdated(
-    //         userId,
-    //         requestUser._id,
-    //         requestUser.lab,
-    //         auditSection
-    //       );
-    //       return res.status(201).json({
-    //         success: true,
-    //         message: "User Updated  Successfully!",
-    //       });
-    //     } catch (err) {
-    //       next(err);
-    //     }
-    //   }
     async getUserById(req, res, next) {
         try {
             const removePassword = true;

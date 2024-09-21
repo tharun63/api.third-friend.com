@@ -1,11 +1,10 @@
-export const ACTIVE = 'ACTIVE'
-export const INACTIVE = 'INACTIVE'
-export const HOLD = 'HOLD'
-export const ARCHIVED = 'ARCHIVED'
-export const ALL_USERS = ['USER', 'AGENCY']
-export const ACCOUNT_STATUS = [ACTIVE, INACTIVE, HOLD, ARCHIVED]
-export const DEFAULT_ACCOUNT_STATUS = ACTIVE
 
+export const ALL_USERS = ['USER', 'ADMIN', 'TRAVELLER']
+export const ACCOUNT_STATUS = ['ACTIVE', 'INACTIVE', 'HOLD', 'ARCHIVED']
+export const DEFAULT_ACCOUNT_STATUS = 'ACTIVE'
+export const DEFAULT_USER_TYPE = 'USER'
+export const AUTH_PROVIDERS = ['GOOGLE','NA']
+export const DEFAULT_AUTH_PROVIDER = 'NA'
 
 
 

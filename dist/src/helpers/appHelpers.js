@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserAuthTokens = exports.generateToken = void 0;
+exports.mapOrderItemsToStripeFormat = exports.getUserAuthTokens = exports.generateToken = void 0;
 const app_1 = __importDefault(require("../../config/app"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const generateToken = function (maxlength = 32) {
@@ -36,4 +36,17 @@ const getUserAuthTokens = function (userData) {
     };
 };
 exports.getUserAuthTokens = getUserAuthTokens;
+const mapOrderItemsToStripeFormat = function (bill_items) {
+    return bill_items.map(item => ({
+        price_data: {
+            currency: 'inr',
+            product_data: {
+                name: item.accession_id,
+            },
+            unit_amount: item.payment_amount * 100
+        },
+        quantity: 1,
+    }));
+};
+exports.mapOrderItemsToStripeFormat = mapOrderItemsToStripeFormat;
 //# sourceMappingURL=appHelpers.js.map

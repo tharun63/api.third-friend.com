@@ -33,10 +33,10 @@ class GoogleAuthController {
                 throw err;
             }
             const userInfo = await googleOAuthServiceProvider_1.default.handleCallback(code);
-            // Step 2: Check if the user already exists
+            //  Check if the user already exists
             let existingUser = await userDataServiceProvider.getUserByEmail(userInfo.email);
             if (!existingUser) {
-                // Step 3: If user doesn't exist, create a new one without a password
+                //  If user doesn't exist, create a new one without a password
                 const newUser = {
                     email: userInfo.email,
                     google_id: userInfo.sub, // Google user ID
@@ -58,7 +58,6 @@ class GoogleAuthController {
                 refresh_token: refreshToken,
                 message: "User login success!",
             };
-            // You can handle user info here - e.g., saving user data to the database
             return res.status(200).json({
                 success: true,
                 message: 'Google OAuth login successful',

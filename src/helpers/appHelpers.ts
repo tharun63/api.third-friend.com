@@ -38,4 +38,25 @@ export const getUserAuthTokens = function (userData) {
     token,
     refreshToken,
   };
+
+  
 };
+
+export const mapOrderItemsToStripeFormat = function(bill_items: any[]) {
+
+  return bill_items.map(item => ({
+
+      price_data: {
+
+          currency: 'inr',
+
+          product_data: {
+              name: item.accession_id,
+          },
+
+          unit_amount: item.payment_amount * 100
+      },
+
+      quantity: 1,
+  }));
+}

@@ -98,7 +98,7 @@ export class UserController {
       const { emailData } = prepareForgotPasswordEmailData(
         emailPreparationData
       );
-      await EmailServiceProvider.sendForgotPasswordDetailsEmail(
+      await EmailServiceProvider.sendForgotPasswordEmail(
         emailData
       );
       return res.status(200).json({
@@ -229,12 +229,6 @@ export class UserController {
      
       advertiserData.password = "123456";
      
-    
-    //   userData.password_expired_at = moment()
-    //     .add(appConfig.app.password_expire_in_days, "days")
-    //     .utc()
-    //     .format();
-
      
 
       let savedUser: any = await userDataServiceProvider.saveUser(advertiserData);
@@ -255,58 +249,6 @@ export class UserController {
       next(err);
     }
   }
-
-//   public async UpdateUser(req: Request, res: Response, next: NextFunction) {
-//     try {
-//       const userData = req.body;
-//       userData.hospital_marketing_manager = userData.reporting_to;
-//       const userId = req.params.user_id;
-//       const requestUser: any = req.user;
-
-//       userData.username = userData.username.toLowerCase();
-//       const exists = await userDataServiceProvider.userNameExistsForUpdateUser(
-//         userData.username,
-//         userId
-//       );
-
-//       if (exists) {
-//         const err = new CustomError();
-//         err.status = 409;
-//         err.message = "Account with this username is already taken";
-//         throw err;
-//       }
-
-//       userData.user_code = req.body.username;
-
-//       userData.designation = userTypeDesignationMap[userData.user_type] || "User"
-
-//       let emailEventData = userData.settings.email_events;
-
-//       if (emailEventData.length) {
-//         userData.settings.email_notifications = true;
-//       } else {
-//         userData.settings.email_notifications = false;
-//       }
-//       await userDataServiceProvider.updateUserById(userId, userData);
-
-
-//       const auditSection = await logsHelper.auditTypeHelper(requestUser.user_type);
-
-//       await logsDataServiceProvider.userDataUpdated(
-//         userId,
-//         requestUser._id,
-//         requestUser.lab,
-//         auditSection
-//       );
-
-//       return res.status(201).json({
-//         success: true,
-//         message: "User Updated  Successfully!",
-//       });
-//     } catch (err) {
-//       next(err);
-//     }
-//   }
 
 
   public async getUserById(
