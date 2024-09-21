@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "env TZ=utc NODE_ENV=dev node dist/src/server.js",
     "dev-win": "SET NODE_ENV=dev&&nodemon -x ts-node ./src/server.ts",
+    "production": "env TZ=utc NODE_ENV=prod node dist/src/server.js",
     "build": "rimraf ./dist && tsc"
   },
   "author": "",
