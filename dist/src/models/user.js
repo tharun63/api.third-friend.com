@@ -21,6 +21,9 @@ const addressSchema = new mongoose_1.Schema({
         type: String,
         required: true,
     },
+    rating: {
+        type: Number
+    },
     zip: {
         type: String,
         required: true,
@@ -44,7 +47,8 @@ const userDataSchema = new mongoose_1.Schema({
         required: true
     },
     mobile: {
-        type: String
+        type: String,
+        required: true
     },
     user_status: {
         type: String,

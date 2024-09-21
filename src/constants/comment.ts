@@ -1,0 +1,2 @@
+export const COMMENT_TYPE = ['COMMENT','REPLY']
+export const DEFAULT_COMMENT_TYPE = 'COMMENT'

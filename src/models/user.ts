@@ -19,6 +19,9 @@ const addressSchema = new Schema({
         type: String,
         required: true,
     },
+    rating:{
+        type: Number
+    },
     zip: {
         type: String,
         required: true,
@@ -44,7 +47,8 @@ const userDataSchema = new Schema(
         required: true
     },
     mobile: {
-        type: String
+        type: String,
+        required: true
     },
     user_status: {
         type: String,
