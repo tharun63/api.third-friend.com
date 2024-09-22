@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { PAYMENT_STATUS, DEFAULT_PAYMENT_STATUS} from '../constants/order'
+import { PAYMENT_STATUS, DEFAULT_PAYMENT_STATUS,DEFAULT_ORDER_STATUS,ORDER_STATUS} from '../constants/order'
 
 
 const deliverToSchema = new Schema({
@@ -27,6 +27,22 @@ const orderDataSchema = new Schema(
         required: true,
         ref: "User",
     },
+    journey_name :{
+        type: String,
+        required:true
+    },
+    total_amount: {
+        type: Number,
+        min: 0.0,
+    },
+    paid_amount: {
+        type: Number,
+        min: 0.0,
+    },
+    discount: {
+        type: Number,
+        default: 0.0
+    },
     drop_point:{
         type:String
     },
@@ -36,11 +52,17 @@ const orderDataSchema = new Schema(
         required: true,
         ref: "Journey",
     },
-    payment_status: {
+    order_status: {
       type: String,
-      enum: PAYMENT_STATUS,
-      default: DEFAULT_PAYMENT_STATUS
+      enum: ORDER_STATUS,
+      default: DEFAULT_ORDER_STATUS
     },
+    payment_status: {
+        type: String,
+        enum: PAYMENT_STATUS,
+        default: DEFAULT_PAYMENT_STATUS
+    },
+
     pg_order_id: {
         type: String,
     },

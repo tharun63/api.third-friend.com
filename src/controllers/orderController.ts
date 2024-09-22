@@ -1,23 +1,38 @@
 import { Request, Response } from 'express';
 import { StripeService } from '../services/stripePaymentService';
-import { mapOrderItemsToStripeFormat } from "../helpers/appHelpers";
-import EmailServiceProvider from "../services/notifications/emailServiceProvider"
-export class StripeController {
+import { mapOrderItemsToStripeFormat,prepareOrderData } from "../helpers/orderHelpers";
+import EmailServiceProvider from "../services/notifications/emailServiceProvider";
+import {OrderDataServiceProvider} from "../services/database/orders";
+
+const orderDataServiceProvider = new OrderDataServiceProvider();
+export class OrderController {
     private stripeService: StripeService;
 
     constructor() {
         this.stripeService = new StripeService();
     }
 
-    async createCheckoutSession(req: Request, res: Response) {
+    async order(req: Request, res: Response) {
         try {
 
             const order = await mapOrderItemsToStripeFormat(req.body.bill_items);
+
             console.log({order})
 
 
             const session = await this.stripeService.createCheckoutSession(order);
-            res.json(session);
+           
+
+            const orderData = prepareOrderData(session,req.body);
+            const orderRes = orderDataServiceProvider.saveOrder(orderData);
+
+            let response = {
+                payment_url: session.url,
+                pg_order_id: session.id
+            };
+
+
+            res.json(response);
         } catch (error) {
             res.status(500).send(error.message);
         }
@@ -35,7 +50,16 @@ export class StripeController {
 
                 case 'checkout.session.completed':
 
-                    session = event.data.object;
+                   session = event.data.object;
+                   const pg_order_id = session.id;
+
+                   const orderUpdateData = {
+                    payment_status: session.status === 'complete' ? 'COMPLETED' : 'FAILED',
+                    order_status: session.status === 'complete' ? 'CONFIRMED' : 'PENDING',
+                    pg_payment_id: session.payment_intent,
+                    paid_amount: session.amount_total/100
+                   }
+                    const  updateOrder = await orderDataServiceProvider.updateOrderByQuery({pg_order_id:pg_order_id},orderUpdateData);
                     await EmailServiceProvider.sendInvoiceEmail(session.customer_details.email, session);
 
                     break;
@@ -47,7 +71,6 @@ export class StripeController {
 
                     const data = await this.stripeService.listCheckoutSessions(session.payment_intent);
 
-                    const id = data.data[0].id;
 
 
                     break;

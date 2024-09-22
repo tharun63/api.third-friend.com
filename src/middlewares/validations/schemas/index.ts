@@ -5,13 +5,14 @@ import { forgotPasswordVerifyHeadersSchema } from "./users/forgotPasswordVerify"
 import { updateProfileDataSchema } from "./users/updateProfile";
 import {addJourneyDataSchema,updateJourneyDataSchema} from "./journeys/addJourney";
 import { resetPasswordSchema } from "./users/resetPassword";
+import { addOrderDataSchema,updateOrderDataSchema } from "./orders/addOrder";
 
 // import { updatePasswordDataSchema } from "./users/updatePassword";
 
 
 export default {
   "/signup": signUpDataSchema,
-  "/signin": signInDataSchema,
+  "/signin": signInDataSchema, 
   "/profile": updateProfileDataSchema,
 //   "/password/update": updatePasswordDataSchema,
 //   /* Forgot password */
@@ -19,6 +20,7 @@ export default {
  "/forgot-passowrd/verify": forgotPasswordVerifyHeadersSchema,
   /* reset password */
  "/reset-password": resetPasswordSchema,
+ "/order":addOrderDataSchema,
 
   "/journey":{
     multi:true,

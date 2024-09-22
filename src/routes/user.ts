@@ -5,7 +5,7 @@ import passportMiddleware from "../middlewares/passportMiddleware";
 import authMiddleware from "../middlewares/authMiddleware";
 import { CustomValidationMiddleware } from "../middlewares/customValidationMiddleware";
 import { GoogleAuthController } from '../controllers/googleAuthController';
-import { StripeController } from "../controllers/stripeController";
+import { OrderController } from "../controllers/orderController";
 import { AccessControlMiddleware } from "../middlewares/accessControlMiddleware";
 
 
@@ -16,7 +16,7 @@ const validateRequest = schemaValidator.validate();
 
 const userController = new UserController();
 const googleAuthController = new GoogleAuthController();
-const stripeController = new StripeController();
+const orderController = new OrderController();
 
 const accessControlMiddleware = new AccessControlMiddleware();
 const customValidationMiddleware = new CustomValidationMiddleware();
@@ -132,7 +132,5 @@ router.get(
 
 router.get('/auth/google', googleAuthController.googleAuth);
 router.get('/auth/google/callback', googleAuthController.googleAuthCallback);
-router.post('/create-checkout-session',stripeController.createCheckoutSession.bind(stripeController));
-router.post('/webhook',stripeController.webHook.bind(stripeController));
 
 export default router;

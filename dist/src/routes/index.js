@@ -6,9 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const ejs_1 = __importDefault(require("ejs"));
 const index_1 = require("./../views/index");
-const user_1 = __importDefault(require("./user"));
 const app_1 = __importDefault(require("../../config/app"));
+const user_1 = __importDefault(require("./user"));
 const journey_1 = __importDefault(require("./journey"));
+const order_1 = __importDefault(require("./order"));
 const router = (0, express_1.Router)();
 router.get("/", (req, res, next) => {
     return res.send(ejs_1.default.render(index_1.index, {
@@ -18,5 +19,6 @@ router.get("/", (req, res, next) => {
 });
 router.use(user_1.default);
 router.use(journey_1.default);
+router.use(order_1.default);
 exports.default = router;
 //# sourceMappingURL=index.js.map

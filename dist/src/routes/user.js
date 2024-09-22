@@ -10,13 +10,13 @@ const passportMiddleware_1 = __importDefault(require("../middlewares/passportMid
 const authMiddleware_1 = __importDefault(require("../middlewares/authMiddleware"));
 const customValidationMiddleware_1 = require("../middlewares/customValidationMiddleware");
 const googleAuthController_1 = require("../controllers/googleAuthController");
-const stripeController_1 = require("../controllers/stripeController");
+const orderController_1 = require("../controllers/orderController");
 const accessControlMiddleware_1 = require("../middlewares/accessControlMiddleware");
 const schemaValidator = new schemaValidator_1.SchemaValidator(true);
 const validateRequest = schemaValidator.validate();
 const userController = new user_1.UserController();
 const googleAuthController = new googleAuthController_1.GoogleAuthController();
-const stripeController = new stripeController_1.StripeController();
+const orderController = new orderController_1.OrderController();
 const accessControlMiddleware = new accessControlMiddleware_1.AccessControlMiddleware();
 const customValidationMiddleware = new customValidationMiddleware_1.CustomValidationMiddleware();
 const router = (0, express_1.Router)();
@@ -70,7 +70,5 @@ router.get("/users", [
 router.get("/users/:id", [authMiddleware_1.default.checkAuthHeader, authMiddleware_1.default.validateAccessToken], userController.getUserById);
 router.get('/auth/google', googleAuthController.googleAuth);
 router.get('/auth/google/callback', googleAuthController.googleAuthCallback);
-router.post('/create-checkout-session', stripeController.createCheckoutSession.bind(stripeController));
-router.post('/webhook', stripeController.webHook.bind(stripeController));
 exports.default = router;
 //# sourceMappingURL=user.js.map
