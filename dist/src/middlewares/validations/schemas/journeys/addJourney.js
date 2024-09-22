@@ -41,7 +41,7 @@ const journeyDataSchema = {
         .items(joi_1.default.string())
         .error((errors) => (0, joiHelpers_1.arrayErrorHandler)(errors, "stops", true)),
     max_weight: joi_1.default.number().required().error((errors) => (0, joiHelpers_1.numberErrorHandler)(errors, "Max Weight")),
-    charge_per_kg: joi_1.default.number().required().error((errors) => (0, joiHelpers_1.numberErrorHandler)(errors, "Charge Per Kg")),
+    charge_per_kg: joi_1.default.number().required().min(90).error((errors) => (0, joiHelpers_1.numberErrorHandler)(errors, "Charge Per Kg")),
 };
 exports.addJourneyDataSchema = joi_1.default.object().keys(journeyDataSchema);
 exports.updateJourneyDataSchema = joi_1.default.object().keys(Object.assign({}, journeyDataSchema));

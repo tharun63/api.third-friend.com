@@ -46,7 +46,7 @@ const journeyDataSchema = {
     max_weight: Joi.number().required().error((errors) =>
         numberErrorHandler(errors, "Max Weight")
     ),
-    charge_per_kg: Joi.number().required().error((errors) =>
+    charge_per_kg: Joi.number().required().min(90).error((errors) =>
         numberErrorHandler(errors, "Charge Per Kg")
     ),
     
