@@ -101,14 +101,6 @@ export class JourneyController {
       query = filtersHelper.journeys(query, req.query);
       sort.updated_at = -1;
 
-      projection = {
-        first_name: 1,
-        last_name: 1,
-        status: 1,
-        username: 1,
-        user_type: 1,
-      };
-
       const [journeys = [], count = 0] = await Promise.all([
         journeyDataServiceProvider.getAllJourneys({ query, skip, limit, sort, projection, }),
         journeyDataServiceProvider.countAllJourneys(query),
