@@ -1,6 +1,11 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CustomValidationMiddleware = void 0;
+const app_1 = __importDefault(require("../../config/app"));
+const axios_1 = __importDefault(require("axios"));
 // data service provider
 const user_1 = require("../services/database/user");
 const customError_1 = require("../interfaces/customError");
@@ -171,6 +176,34 @@ class CustomValidationMiddleware {
         ];
         return next();
     }
+    async verifyRecaptcha(request, res, next) {
+        const recaptchaResponse = request.body['g-recaptcha-response'];
+        const secretKey = app_1.default.google.google_recaptcha_secret_key;
+        const url = app_1.default.google.google_recaptcha_url;
+        try {
+            const response = await axios_1.default.post(`${url}`, null, {
+                params: {
+                    secret: secretKey,
+                    response: recaptchaResponse,
+                },
+            });
+            const { success } = response.data;
+            if (!success) {
+                return res.status(400).json({
+                    success: false,
+                    message: "reCAPTCHA verification failed",
+                });
+            }
+            next(); // Proceed to the next middleware/controller if verification is successful
+        }
+        catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: "Internal Server Error",
+            });
+        }
+    }
+    ;
 }
 exports.CustomValidationMiddleware = CustomValidationMiddleware;
 //# sourceMappingURL=customValidationMiddleware.js.map

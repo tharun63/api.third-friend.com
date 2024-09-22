@@ -1,4 +1,8 @@
 import { Request, Response, NextFunction, query } from "express";
+import config from "../../config/app";
+
+import axios from 'axios';
+
 // data service provider
 import { UserDataServiceProvider} from "../services/database/user";
 
@@ -236,5 +240,42 @@ export class CustomValidationMiddleware {
 
     return next();
   }
+
+
+public async verifyRecaptcha (
+  request: AuthRequest,
+  res: Response,
+  next: NextFunction)
+  {
+  const recaptchaResponse = request.body['g-recaptcha-response'];
+  const secretKey = config.google.google_recaptcha_secret_key;
+  const url = config.google.google_recaptcha_url
+
+  try {
+    const response:any = await axios.post(`${url}`, null, {
+      params: {
+        secret: secretKey,
+        response: recaptchaResponse,
+      },
+    });
+
+    const { success } = response.data;
+
+    if (!success) {
+      return res.status(400).json({
+        success: false,
+        message: "reCAPTCHA verification failed",
+      });
+    }
+
+    next(); // Proceed to the next middleware/controller if verification is successful
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
 
 }

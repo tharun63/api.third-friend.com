@@ -27,6 +27,7 @@ const router: Router = Router();
 router.post(
   "/signin",
   validateRequest,
+  // customValidationMiddleware.verifyRecaptcha,
   passportMiddleware.authenticate("login", {
     session: false,
     failWithError: true,
@@ -46,6 +47,7 @@ router.post(
   [
     validateRequest,
     customValidationMiddleware.checkEmailExists,
+    // customValidationMiddleware.verifyRecaptcha,
   ],
   userController.signUp
 );
@@ -74,21 +76,6 @@ router.post(
   userController.resetPassword
 )
 
-router.get(
-  "/profile",
-  [authMiddleware.checkAuthHeader, authMiddleware.validateAccessToken],
-  userController.getProfile
-);
-
-router.patch(
-  "/profile",
-  [
-    validateRequest,
-    authMiddleware.checkAuthHeader,
-    authMiddleware.validateAccessToken,
-  ],
-  userController.updateProfile
-);
 
 router.patch(
   "/password/update",
@@ -132,5 +119,23 @@ router.get(
 
 router.get('/auth/google', googleAuthController.googleAuth);
 router.get('/auth/google/callback', googleAuthController.googleAuthCallback);
+
+
+// router.get(
+//   "/profile",
+//   [authMiddleware.checkAuthHeader, authMiddleware.validateAccessToken],
+//   userController.getProfile
+// );
+
+// router.patch(
+//   "/profile",
+//   [
+//     validateRequest,
+//     authMiddleware.checkAuthHeader,
+//     authMiddleware.validateAccessToken,
+//   ],
+//   userController.updateProfile
+// );
+
 
 export default router;

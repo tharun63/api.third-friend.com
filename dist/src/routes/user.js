@@ -20,7 +20,9 @@ const orderController = new orderController_1.OrderController();
 const accessControlMiddleware = new accessControlMiddleware_1.AccessControlMiddleware();
 const customValidationMiddleware = new customValidationMiddleware_1.CustomValidationMiddleware();
 const router = (0, express_1.Router)();
-router.post("/signin", validateRequest, passportMiddleware_1.default.authenticate("login", {
+router.post("/signin", validateRequest, 
+// customValidationMiddleware.verifyRecaptcha,
+passportMiddleware_1.default.authenticate("login", {
     session: false,
     failWithError: true,
 }), authMiddleware_1.default.checkUserStatus, userController.signIn, (err, req, res, next) => {
@@ -33,6 +35,7 @@ router.post("/signin", validateRequest, passportMiddleware_1.default.authenticat
 router.post("/signup", [
     validateRequest,
     customValidationMiddleware.checkEmailExists,
+    // customValidationMiddleware.verifyRecaptcha,
 ], userController.signUp);
 router.post("/forgot-password", [validateRequest, authMiddleware_1.default.checkUserByEmail], userController.forgotPassword);
 router.post('/forgot-password/verify', [
@@ -43,12 +46,6 @@ router.post('/reset-password', [
     validateRequest,
     authMiddleware_1.default.verifyUser,
 ], userController.resetPassword);
-router.get("/profile", [authMiddleware_1.default.checkAuthHeader, authMiddleware_1.default.validateAccessToken], userController.getProfile);
-router.patch("/profile", [
-    validateRequest,
-    authMiddleware_1.default.checkAuthHeader,
-    authMiddleware_1.default.validateAccessToken,
-], userController.updateProfile);
 router.patch("/password/update", [
     validateRequest,
     authMiddleware_1.default.checkAuthHeader,
@@ -70,5 +67,19 @@ router.get("/users", [
 router.get("/users/:id", [authMiddleware_1.default.checkAuthHeader, authMiddleware_1.default.validateAccessToken], userController.getUserById);
 router.get('/auth/google', googleAuthController.googleAuth);
 router.get('/auth/google/callback', googleAuthController.googleAuthCallback);
+// router.get(
+//   "/profile",
+//   [authMiddleware.checkAuthHeader, authMiddleware.validateAccessToken],
+//   userController.getProfile
+// );
+// router.patch(
+//   "/profile",
+//   [
+//     validateRequest,
+//     authMiddleware.checkAuthHeader,
+//     authMiddleware.validateAccessToken,
+//   ],
+//   userController.updateProfile
+// );
 exports.default = router;
 //# sourceMappingURL=user.js.map

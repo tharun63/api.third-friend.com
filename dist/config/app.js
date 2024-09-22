@@ -20,7 +20,10 @@ const DB = {
 const GOOGLE_API = {
     google_client_id: process.env.CLIENT_ID,
     google_client_secret: process.env.CLIENT_SECRET,
-    google_redirect_uri: process.env.REDIRECT_URI
+    google_redirect_uri: process.env.REDIRECT_URI,
+    google_recaptcha_site_key: process.env.SITE_KEY,
+    google_recaptcha_secret_key: process.env.SECRET_KEY,
+    google_recaptcha_url: process.env.RECAPTCHA_URL
 };
 const EMAIL_SERVICE = {
     email_service: process.env.EMAIL_SERVICE,
