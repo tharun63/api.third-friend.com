@@ -51,36 +51,6 @@ export class UserController {
     }
   }
 
-  public async getProfile(req: AuthRequest, res: Response, next: NextFunction) {
-    try {
-      let advertiserDetails: any = await userDataServiceProvider.userById(
-        req.user._id,
-        true
-      );
-      const profile = {
-        first_name: advertiserDetails.first_name,
-        last_name: advertiserDetails.last_name,
-        email: advertiserDetails.email,
-        phone: advertiserDetails.phone,
-        username: advertiserDetails.username,
-        address: advertiserDetails.address,
-        user_type: advertiserDetails.user_type
-      };
-
-      return res.status(200).json({
-        success: true,
-        message: "User profile fetched successfully",
-        data: profile,
-      });
-    } catch (error) {
-      let respData = {
-        success: false,
-        message: error.message,
-      };
-
-      return res.status(error.statusCode || 500).json(respData);
-    }
-  }
 
   public async forgotPassword(
     req: AuthRequest,
@@ -153,33 +123,33 @@ export class UserController {
   }
 
 
-  public async updateProfile(
-    req: AuthRequest,
-    res: Response,
-    next: NextFunction
-  ) {
-    try {
-      let profile = req.body;
-      if (profile.user_code) {
-        delete profile.user_code;
-      }
-      if (profile.avatar) {
-        delete profile.avatar;
-      }
-      await userDataServiceProvider.updateUserById(req.user._id, profile);
+  // public async updateProfile(
+  //   req: AuthRequest,
+  //   res: Response,
+  //   next: NextFunction
+  // ) {
+  //   try {
+  //     let profile = req.body;
+  //     if (profile.user_code) {
+  //       delete profile.user_code;
+  //     }
+  //     if (profile.avatar) {
+  //       delete profile.avatar;
+  //     }
+  //     await userDataServiceProvider.updateUserById(req.user._id, profile);
 
-      return res.status(200).json({
-        success: true,
-        message: "Profile updated successfully",
-      });
-    } catch (error) {
-      let respData = {
-        success: false,
-        message: error.message,
-      };
-      return res.status(error.statusCode || 500).json(respData);
-    }
-  }
+  //     return res.status(200).json({
+  //       success: true,
+  //       message: "Profile updated successfully",
+  //     });
+  //   } catch (error) {
+  //     let respData = {
+  //       success: false,
+  //       message: error.message,
+  //     };
+  //     return res.status(error.statusCode || 500).json(respData);
+  //   }
+  // }
 
   public async updatePassword(
     req: AuthRequest,
@@ -203,49 +173,6 @@ export class UserController {
       return res.status(201).json(respData);
     } catch (error) {
       return next(error);
-    }
-  }
-
- 
-
-  public async AddUser(req: Request, res: Response, next: NextFunction) {
-    try {
-
-      const userData = req.body;
-      const requestedUser: any = req.user;
-
-      userData.username = userData.username.toLowerCase();
-      const exists = await userDataServiceProvider.userNameExists(
-        userData.username
-      );
-
-      if (exists) {
-        const err = new CustomError();
-        err.status = 409;
-        err.message = "Account with this username is already taken";
-        throw err;
-      }
-     
-      userData.password = "123456";
-     
-     
-
-      let savedUser: any = await userDataServiceProvider.saveUser(userData);
-
-    
-      const addedUserName = savedUser.first_name + " " + savedUser.last_name;
-      const role = savedUser.user_type
-        .split('_')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-        .join(' ');
-
-      return res.status(201).json({
-        success: true,
-        message: "User Registered  Successfully!",
-        data: savedUser
-      });
-    } catch (err) {
-      next(err);
     }
   }
 
@@ -315,5 +242,77 @@ export class UserController {
       return err;
     }
   }
+
+   // public async getProfile(req: AuthRequest, res: Response, next: NextFunction) {
+  //   try {
+  //     let advertiserDetails: any = await userDataServiceProvider.userById(
+  //       req.user._id,
+  //       true
+  //     );
+  //     const profile = {
+  //       first_name: advertiserDetails.first_name,
+  //       last_name: advertiserDetails.last_name,
+  //       email: advertiserDetails.email,
+  //       phone: advertiserDetails.phone,
+  //       username: advertiserDetails.username,
+  //       address: advertiserDetails.address,
+  //       user_type: advertiserDetails.user_type
+  //     };
+
+  //     return res.status(200).json({
+  //       success: true,
+  //       message: "User profile fetched successfully",
+  //       data: profile,
+  //     });
+  //   } catch (error) {
+  //     let respData = {
+  //       success: false,
+  //       message: error.message,
+  //     };
+
+  //     return res.status(error.statusCode || 500).json(respData);
+  //   }
+  // }
+
+   // public async AddUser(req: Request, res: Response, next: NextFunction) {
+  //   try {
+
+  //     const userData = req.body;
+  //     const requestedUser: any = req.user;
+
+  //     userData.username = userData.username.toLowerCase();
+  //     const exists = await userDataServiceProvider.userNameExists(
+  //       userData.username
+  //     );
+
+  //     if (exists) {
+  //       const err = new CustomError();
+  //       err.status = 409;
+  //       err.message = "Account with this username is already taken";
+  //       throw err;
+  //     }
+     
+  //     userData.password = "123456";
+     
+     
+
+  //     let savedUser: any = await userDataServiceProvider.saveUser(userData);
+
+    
+  //     const addedUserName = savedUser.first_name + " " + savedUser.last_name;
+  //     const role = savedUser.user_type
+  //       .split('_')
+  //       .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+  //       .join(' ');
+
+  //     return res.status(201).json({
+  //       success: true,
+  //       message: "User Registered  Successfully!",
+  //       data: savedUser
+  //     });
+  //   } catch (err) {
+  //     next(err);
+  //   }
+  // }
   
 }

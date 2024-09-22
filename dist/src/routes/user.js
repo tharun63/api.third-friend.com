@@ -52,11 +52,6 @@ router.patch("/password/update", [
     authMiddleware_1.default.validateAccessToken,
     customValidationMiddleware.checkCurrentPasswordIsCorrect,
 ], userController.updatePassword);
-router.post("/users", [
-    validateRequest,
-    authMiddleware_1.default.checkAuthHeader,
-    authMiddleware_1.default.validateAccessToken,
-], userController.AddUser);
 router.get("/users", [
     validateRequest,
     authMiddleware_1.default.checkAuthHeader,
@@ -80,6 +75,15 @@ router.get('/auth/google/callback', googleAuthController.googleAuthCallback);
 //     authMiddleware.validateAccessToken,
 //   ],
 //   userController.updateProfile
+// );
+// router.post(
+//   "/users",
+//   [
+//     validateRequest,
+//     authMiddleware.checkAuthHeader,
+//     authMiddleware.validateAccessToken,
+//   ],
+//   userController.AddUser
 // );
 exports.default = router;
 //# sourceMappingURL=user.js.map

@@ -48,7 +48,6 @@ const userDataSchema = new mongoose_1.Schema({
     },
     mobile: {
         type: String,
-        required: true
     },
     user_status: {
         type: String,

@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const user_1 = require("../services/database/user");
 const appHelpers_1 = require("../helpers/appHelpers");
-const customError_1 = require("../interfaces/customError");
 const filterHelper_1 = __importDefault(require("../helpers/filterHelper"));
 const paginationHelpers_1 = __importDefault(require("../helpers/paginationHelpers"));
 const emailServiceProvider_1 = __importDefault(require("../services/notifications/emailServiceProvider"));
@@ -45,32 +44,6 @@ class UserController {
         }
         catch (err) {
             next(err);
-        }
-    }
-    async getProfile(req, res, next) {
-        try {
-            let advertiserDetails = await userDataServiceProvider.userById(req.user._id, true);
-            const profile = {
-                first_name: advertiserDetails.first_name,
-                last_name: advertiserDetails.last_name,
-                email: advertiserDetails.email,
-                phone: advertiserDetails.phone,
-                username: advertiserDetails.username,
-                address: advertiserDetails.address,
-                user_type: advertiserDetails.user_type
-            };
-            return res.status(200).json({
-                success: true,
-                message: "User profile fetched successfully",
-                data: profile,
-            });
-        }
-        catch (error) {
-            let respData = {
-                success: false,
-                message: error.message,
-            };
-            return res.status(error.statusCode || 500).json(respData);
         }
     }
     async forgotPassword(req, res, next) {
@@ -120,29 +93,32 @@ class UserController {
             next(err);
         }
     }
-    async updateProfile(req, res, next) {
-        try {
-            let profile = req.body;
-            if (profile.user_code) {
-                delete profile.user_code;
-            }
-            if (profile.avatar) {
-                delete profile.avatar;
-            }
-            await userDataServiceProvider.updateUserById(req.user._id, profile);
-            return res.status(200).json({
-                success: true,
-                message: "Profile updated successfully",
-            });
-        }
-        catch (error) {
-            let respData = {
-                success: false,
-                message: error.message,
-            };
-            return res.status(error.statusCode || 500).json(respData);
-        }
-    }
+    // public async updateProfile(
+    //   req: AuthRequest,
+    //   res: Response,
+    //   next: NextFunction
+    // ) {
+    //   try {
+    //     let profile = req.body;
+    //     if (profile.user_code) {
+    //       delete profile.user_code;
+    //     }
+    //     if (profile.avatar) {
+    //       delete profile.avatar;
+    //     }
+    //     await userDataServiceProvider.updateUserById(req.user._id, profile);
+    //     return res.status(200).json({
+    //       success: true,
+    //       message: "Profile updated successfully",
+    //     });
+    //   } catch (error) {
+    //     let respData = {
+    //       success: false,
+    //       message: error.message,
+    //     };
+    //     return res.status(error.statusCode || 500).json(respData);
+    //   }
+    // }
     async updatePassword(req, res, next) {
         try {
             //   const passwordExpiredAt = moment()
@@ -158,35 +134,6 @@ class UserController {
         }
         catch (error) {
             return next(error);
-        }
-    }
-    async AddUser(req, res, next) {
-        try {
-            const userData = req.body;
-            const requestedUser = req.user;
-            userData.username = userData.username.toLowerCase();
-            const exists = await userDataServiceProvider.userNameExists(userData.username);
-            if (exists) {
-                const err = new customError_1.CustomError();
-                err.status = 409;
-                err.message = "Account with this username is already taken";
-                throw err;
-            }
-            userData.password = "123456";
-            let savedUser = await userDataServiceProvider.saveUser(userData);
-            const addedUserName = savedUser.first_name + " " + savedUser.last_name;
-            const role = savedUser.user_type
-                .split('_')
-                .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-                .join(' ');
-            return res.status(201).json({
-                success: true,
-                message: "User Registered  Successfully!",
-                data: savedUser
-            });
-        }
-        catch (err) {
-            next(err);
         }
     }
     async getUserById(req, res, next) {

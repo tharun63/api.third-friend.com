@@ -88,16 +88,7 @@ router.patch(
   userController.updatePassword
 );
 
-router.post(
-  "/users",
-  [
-    validateRequest,
-    authMiddleware.checkAuthHeader,
-    authMiddleware.validateAccessToken,
-    
-  ],
-  userController.AddUser
-);
+
 router.get(
   "/users",
   [
@@ -135,6 +126,17 @@ router.get('/auth/google/callback', googleAuthController.googleAuthCallback);
 //     authMiddleware.validateAccessToken,
 //   ],
 //   userController.updateProfile
+// );
+
+// router.post(
+//   "/users",
+//   [
+//     validateRequest,
+//     authMiddleware.checkAuthHeader,
+//     authMiddleware.validateAccessToken,
+    
+//   ],
+//   userController.AddUser
 // );
 
 
