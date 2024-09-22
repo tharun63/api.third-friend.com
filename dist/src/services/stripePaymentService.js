@@ -20,7 +20,7 @@ class StripeService {
                 invoice_creation: {
                     enabled: true,
                 },
-                success_url: 'http://localhost:3000/v1.0',
+                success_url: 'https://api-third-friend-com.onrender.com/v1.0',
                 cancel_url: 'http://localhost:3000',
             });
             return session;
